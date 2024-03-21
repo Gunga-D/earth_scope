@@ -1,0 +1,2 @@
+hurricane==0.1
+obspy==1.4.0
