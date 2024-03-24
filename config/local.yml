@@ -2,3 +2,4 @@ version: '1.0.0'
 logger:
   name: 'local'
   level: 'INFO'
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'

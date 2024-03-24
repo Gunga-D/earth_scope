@@ -1,7 +1,10 @@
 from typing import List, Optional, Callable
+from obspy.clients.seedlink.easyseedlink import EasySeedLinkClient
+
+from lib.utils.logger import get_product_logger
+
 from lib.interactions.iris.exception import IrisClientException
 from lib.interactions.entities import Channel
-from obspy.clients.seedlink.easyseedlink import EasySeedLinkClient
 
 class IrisClient(EasySeedLinkClient):
     def __init__(self, host: str, port: str, channels: List[Channel], data_callback: Optional[Callable] = None):
@@ -19,8 +22,8 @@ class IrisClient(EasySeedLinkClient):
             super().select_stream(channel.network, channel.station, '???')
 
     def default_data_callback(self, trace):
-        print('Received iris edu trace:')
-        print(trace)
+        logger = get_product_logger()
+        logger.info(f'Received iris edu trace from logger:\n{trace}\n')
 
     def on_data(self, trace):
         self.data_callback(trace)
