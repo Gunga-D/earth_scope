@@ -1,5 +1,7 @@
+from datetime import datetime
 from typing import List, Optional, Callable
 from obspy.clients.seedlink.easyseedlink import EasySeedLinkClient
+from obspy.core.trace import Trace
 
 from lib.utils.logger import get_product_logger
 
@@ -15,15 +17,16 @@ class IrisClient(EasySeedLinkClient):
         if len(channels) == 0:
             raise IrisClientException('At least one channel is required to connect the iris edu service')
         
-        if not data_callback:
+        self.data_callback = data_callback
+        if not self.data_callback:
             self.data_callback = self.default_data_callback
             
         for channel in channels:
             super().select_stream(channel.network, channel.station, '???')
 
-    def default_data_callback(self, trace):
+    def default_data_callback(self, trace: Trace):
         logger = get_product_logger()
         logger.info(f'Received iris edu trace from logger:\n{trace}\n')
 
-    def on_data(self, trace):
+    def on_data(self, trace: Trace):
         self.data_callback(trace)
