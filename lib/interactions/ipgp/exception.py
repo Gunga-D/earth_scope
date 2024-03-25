@@ -1,0 +1,2 @@
+class IPGPClientException(Exception):
+    pass

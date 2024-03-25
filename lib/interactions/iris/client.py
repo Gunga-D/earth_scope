@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List, Optional, Callable
 from obspy.clients.seedlink.easyseedlink import EasySeedLinkClient
 from obspy.core.trace import Trace
@@ -8,7 +7,7 @@ from lib.utils.logger import get_product_logger
 from lib.interactions.iris.exception import IrisClientException
 from lib.interactions.entities import Channel
 
-class IrisClient(EasySeedLinkClient):
+class WSIrisClient(EasySeedLinkClient):
     def __init__(self, host: str, port: str, channels: List[Channel], data_callback: Optional[Callable] = None):
         super().__init__(host + ':' + port)
 
