@@ -6,7 +6,7 @@ import threading
 import datetime
 
 from lib.config import settings
-from lib.interactions.iris.client import WSIrisClient
+from lib.interactions.iris import IrisClient
 from lib.interactions.entities import Channel
 from lib.utils.logger import get_product_logger
 
@@ -38,7 +38,7 @@ def load_iris(port, host, channel: List[str]) -> None:
         lock.release()
         logger.info(f'saved {full_path}')
 
-    client = WSIrisClient(host, str(port), channels, saving)
+    client = IrisClient(host, str(port), channels, saving)
     client.run()
 
 

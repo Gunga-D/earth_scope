@@ -1,6 +1,6 @@
-from lib.interactions.ipgp.client import HTTPIPGPClient
-from lib.interactions.iris.client import WSIrisClient
+from lib.interactions.ipgp import IPGPClient
+from lib.interactions.iris import IrisClient
 
 class InteractionClients(object):
-    ipgp: HTTPIPGPClient
-    iris: WSIrisClient
+    ipgp: IPGPClient
+    iris: IrisClient
