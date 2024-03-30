@@ -1,0 +1,2 @@
+class GeofonClientException(Exception):
+    pass

@@ -6,16 +6,16 @@ import datetime
 import os
 
 from lib.config import SAVING_PATH
-from lib.interactions.iris import IrisClient
+from lib.interactions.geofon import GeofonClient
 from lib.interactions.entities import Channel
 
 @click.command()
 @click.option('--port', default=18000, help='Seedlink port to load the data', type=(click.INT))
-@click.option('--host', default='rtserve.iris.washington.edu', help='Seedlink host to load the data', type=(click.STRING))
-@click.option('--channel', default=['YN/SGBS2', 'XL/MG04', 'WY/YGC'], multiple=True, help='Receive channels in format [network]/[station]')
-def load_iris(port, host, channel: List[str]) -> None:
-    """Start loading data only from iris.edu.
-    Usage: cli.py load_iris --port=18000 --host=rtserve.iris.washington.edu --channel YN/SGBS2 --channel XL/MG04 --channel WY/YGC
+@click.option('--host', default='geofon-open.gfz-potsdam.de', help='Seedlink host to load the data', type=(click.STRING))
+@click.option('--channel', default=['GE/SFJD'], multiple=True, help='Receive channels in format [network]/[station]')
+def load_geofon(port, host, channel: List[str]) -> None:
+    """Start loading data only from geofon.
+    Usage: cli.py load_geofon --port=18000 --host=geofon-open.gfz-potsdam.de --channel WLF/GE
     """
     if len(channel) == 0:
         raise ValueError('There must be at least one channel')
@@ -42,5 +42,5 @@ def load_iris(port, host, channel: List[str]) -> None:
             return
         click.echo(f'saved {full_path}')
 
-    client = IrisClient(host, str(port), channels, saving)
+    client = GeofonClient(host, str(port), channels, saving)
     client.run()
