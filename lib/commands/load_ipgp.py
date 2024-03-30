@@ -10,7 +10,7 @@ from lib.interactions.entities import Channel
 @click.option('--url', default='http://ws.ipgp.fr/fdsnws', help='Base url of ipgp client', type=(click.STRING))
 @click.option('--channel', default=['G/CCD'], multiple=True, help='Receive channels in format [network]/[station]')
 def load_ipgp(url, channel: List[str]) -> None:
-    """Start loading data from ipgp.
+    """Start loading data only from ipgp.
     Usage: cli.py load_ipgp --url=http://ws.ipgp.fr/fdsnws --channel G/CCD
     """
     if len(channel) == 0:

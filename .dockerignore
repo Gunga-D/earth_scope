@@ -1,6 +1,0 @@
-.git
-.coverage
-.idea
-log/*
-helm/*
-pgbouncer/*

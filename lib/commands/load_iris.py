@@ -15,7 +15,7 @@ from lib.utils.logger import get_product_logger
 @click.option('--host', default='rtserve.iris.washington.edu', help='Seedlink host to load the data', type=(click.STRING))
 @click.option('--channel', default=['YN/SGBS2', 'XL/MG04', 'WY/YGC'], multiple=True, help='Receive channels in format [network]/[station]')
 def load_iris(port, host, channel: List[str]) -> None:
-    """Start loading data from iris.edu.
+    """Start loading data only from iris.edu.
     Usage: cli.py load_iris --port=18000 --host=rtserve.iris.washington.edu --channel YN/SGBS2 --channel XL/MG04 --channel WY/YGC
     """
     if len(channel) == 0:

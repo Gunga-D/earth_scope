@@ -12,7 +12,8 @@ class IPGPClient(IndirectClient):
         self.base_url = base_url
 
     def timeseries(self, channel: Channel, start_time: str, end_time: str) -> Stream:
-        headers = {'User-Agent': f'EarthScope/{settings['version']}'}
+        print(settings)
+        headers = {'User-Agent': f"GeoScopeCLI/{settings['version']}"}
 
         remoteaddr = self.base_url + \
             f'/dataselect/1/query?starttime={start_time}&endtime={end_time}&network={channel.network}&station={channel.station}'
