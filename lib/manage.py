@@ -1,11 +1,8 @@
-from lib.utils.logger import configure_logging
 from lib.utils.cli import CLI
 
 from lib.commands.load_iris import load_iris
 from lib.commands.load_ipgp import load_ipgp
 from lib.commands.run_loader import run_loader
-
-configure_logging()
 
 cli = CLI(commands=[
     load_iris, load_ipgp, run_loader

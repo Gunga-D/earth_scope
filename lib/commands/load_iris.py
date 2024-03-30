@@ -2,13 +2,12 @@ import click
 from typing import List
 from obspy.core import Trace
 from os.path import normpath
-import threading
 import datetime
+import os
 
-from lib.config import settings
+from lib.config import SAVING_PATH
 from lib.interactions.iris import IrisClient
 from lib.interactions.entities import Channel
-from lib.utils.logger import get_product_logger
 
 @click.command()
 @click.option('--port', default=18000, help='Seedlink port to load the data', type=(click.INT))
@@ -27,16 +26,21 @@ def load_iris(port, host, channel: List[str]) -> None:
             raise ValueError(f'Channel {raw_channel} is not valid. The format [network]/[station]')
         channels.append(Channel(network=parsed_channel[0], station=parsed_channel[1]))
     
-    lock = threading.Lock()
     def saving(trace: Trace):
-        logger = get_product_logger()
-
-        full_path = normpath(settings['saving_path'] + '/' + 
-                             f'{trace.stats.network}-{trace.stats.station}-{datetime.datetime.now()}.mseed')
-        lock.acquire()
-        trace.write(full_path, 'MSEED')
-        lock.release()
-        logger.info(f'saved {full_path}')
+        pathExists = os.path.exists(SAVING_PATH)
+        if not pathExists:
+            os.makedirs(SAVING_PATH)
+        
+        now = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S')
+        full_path = normpath(SAVING_PATH + '/' + 
+                             f'{trace.stats.network}-{trace.stats.station}|{now}.mseed')
+        
+        try:
+            trace.write(full_path, 'MSEED')
+        except Exception as e:
+            click.echo(f'cannot saved trace from {trace.stats.network}/{trace.stats.station} cause {str(e)}')
+            return
+        click.echo(f'saved {full_path}')
 
     client = IrisClient(host, str(port), channels, saving)
     client.run()

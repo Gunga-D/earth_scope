@@ -1,6 +1,0 @@
-version: '1.0.0'
-saving_path: './data'
-logger:
-  name: 'earth_scope'
-  level: 'INFO'
-  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
