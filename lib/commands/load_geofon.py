@@ -12,7 +12,7 @@ from lib.interactions.entities import Channel
 @click.command()
 @click.option('--port', default=18000, help='Seedlink port to load the data', type=(click.INT))
 @click.option('--host', default='geofon-open.gfz-potsdam.de', help='Seedlink host to load the data', type=(click.STRING))
-@click.option('--channel', default=['GE/SFJD'], multiple=True, help='Receive channels in format [network]/[station]')
+@click.option('--channel', default=['GE/SFJD', 'GE/PUL'], multiple=True, help='Receive channels in format [network]/[station]')
 def load_geofon(port, host, channel: List[str]) -> None:
     """Start loading data only from geofon.
     Usage: cli.py load_geofon --port=18000 --host=geofon-open.gfz-potsdam.de --channel WLF/GE
