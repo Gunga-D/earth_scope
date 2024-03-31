@@ -13,7 +13,7 @@ from lib.interactions.geofon import GeofonClient
 
 from lib.services.ipgp import IPGPService
 
-@click.option('--config_path', default='./config.yml', help='Path of config', type=(click.STRING))
+@click.option('--config_path', default='./main.config.yml', help='Path of config', type=(click.STRING))
 @click.command()
 def run_loader(config_path) -> None:
     """Run loader from all resources.
