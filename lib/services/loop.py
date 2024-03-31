@@ -1,17 +1,20 @@
-import asyncio
-from datetime import datetime, timezone, timedelta
 import time
-from typing import Optional, Callable, List
+from datetime import datetime, timezone, timedelta
+from typing import Callable, List
 
 from lib.interactions.entities import Channel 
 from lib.interactions.indirect import IndirectClient
 
 class Looper(object):
-    def __init__(self, channels: List[Channel], client: IndirectClient):
+    def __init__(self, channels: List[Channel], client: IndirectClient, data_callback: Callable):
         self.client = client
         self.channels = channels
+
+        self.data_callback = data_callback
+
+        self.delay = 300
     
-    async def run(self, delay: float, data_callback: Optional[Callable] = None):
+    def run(self):
         last_times = {}
         for channel in self.channels:
             last_times[channel.network + '/' + channel.station] = datetime.now(timezone.utc) - timedelta(minutes=60)
@@ -25,9 +28,9 @@ class Looper(object):
                                                 current_time.strftime('%Y-%m-%dT%H:%M:%S'))
 
                     fetched_interval = f"{last_times[channel.network + '/' + channel.station].strftime('%Y-%m-%dT%H:%M:%S')}-{current_time.strftime('%Y-%m-%dT%H:%M:%S')}"
-                    data_callback(channel, stream, fetched_interval)
+                    self.data_callback(channel, stream, fetched_interval)
 
                     last_times[channel.network + '/' + channel.station] = datetime.now(timezone.utc) - timedelta(seconds=10)
                 except Exception:
                     pass
-            await asyncio.sleep(delay)
+            time.sleep(self.delay)
