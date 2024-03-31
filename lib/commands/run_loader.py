@@ -13,11 +13,11 @@ from lib.interactions.geofon import GeofonClient
 
 from lib.services.ipgp import IPGPService
 
-@click.option('--config_path', default='./main.config.yml', help='Path of config', type=(click.STRING))
+@click.option('--config_path', default='./etc/main.config.yml', help='Path of config', type=(click.STRING))
 @click.command()
 def run_loader(config_path) -> None:
     """Run loader from all resources.
-    Usage: cli.py run_loader --config_path=./config.yml
+    Usage: cli.py run_loader --config_path=./etc/main.config.yml
     """
     try:
         with open(config_path, 'r') as file:
