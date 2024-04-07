@@ -1,3 +1,3 @@
 .PHONY: build
 build:
-	python -m nuitka --follow-imports bin/cli.py
+	python -m nuitka --follow-imports --onefile bin/cli.py
