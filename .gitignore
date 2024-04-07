@@ -55,3 +55,6 @@ swagger.yaml
 
 # helm
 helm/requirements.lock
+.DS_Store
+lib/.DS_Store
+lib/interactions/.DS_Store
