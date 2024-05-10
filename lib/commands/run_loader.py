@@ -11,8 +11,6 @@ from lib.interactions.iris import IrisClient
 from lib.interactions.ipgp import IPGPClient
 from lib.interactions.geofon import GeofonClient
 
-from lib.services.ipgp import IPGPService
-
 @click.option('--config_path', default='./etc/main.config.yml', help='Path of config', type=(click.STRING))
 @click.command()
 def run_loader(config_path) -> None:
@@ -44,15 +42,15 @@ def run_loader(config_path) -> None:
         else:
             click.echo(f'WARNGING: iris edu is disabled cause init throw error: {e}')
 
-    try:
-        client = IPGPClient(config['ipgp']['url'])
-        services['ipgp'] = IPGPService(fetch_channels(config['ipgp']['channels']),
-                                        client, stream_handler('ipgp', saving_path, lock))
-    except Exception as e:
-        if type(e) is KeyError:
-            click.echo(f'WARNGING: ipgp is disabled cause no channels in config')
-        else:
-            click.echo(f'WARNGING: ipgp is disabled cause fetching channels throw error: {e}')
+    # try:
+    #     client = IPGPClient(config['ipgp']['url'])
+    #     services['ipgp'] = IPGPService(fetch_channels(config['ipgp']['channels']),
+    #                                     client, stream_handler('ipgp', saving_path, lock))
+    # except Exception as e:
+    #     if type(e) is KeyError:
+    #         click.echo(f'WARNGING: ipgp is disabled cause no channels in config')
+    #     else:
+    #         click.echo(f'WARNGING: ipgp is disabled cause fetching channels throw error: {e}')
 
     try:
         services['geofon'] = GeofonClient(config['geofon']['host'], str(config['geofon']['port']),

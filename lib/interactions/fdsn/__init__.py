@@ -1,4 +1,4 @@
-from lib.interactions.indirect import IndirectClient
+from lib.interactions.base import IndirectClient
 from lib.interactions.entities import Channel
 from obspy.core import Stream
 from obspy import read

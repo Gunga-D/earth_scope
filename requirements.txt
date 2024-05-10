@@ -41,3 +41,5 @@ whichcraft==0.6.1
 zope.event==5.0
 zope.interface==6.2
 zstandard==0.22.0
+aiohttp==3.9.5
+marshmallow==3.21.2

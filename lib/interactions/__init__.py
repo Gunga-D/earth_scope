@@ -1,6 +1,10 @@
 from lib.interactions.ipgp import IPGPClient
 from lib.interactions.iris import IrisClient
+from lib.interactions.geofon import GeofonClient
 
 class InteractionClients(object):
-    ipgp: IPGPClient
-    iris: IrisClient
+    geoservices = {
+        'GEOFON': GeofonClient,
+        "IRIS": IrisClient,
+        "IPGP": IPGPClient,
+    }

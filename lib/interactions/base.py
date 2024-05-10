@@ -1,9 +1,15 @@
+from lib.interactions.entities import Channel
+
 import time
 from datetime import datetime, timezone, timedelta
 from typing import Callable, List
+from abc import ABC, abstractmethod
+from obspy.core import Stream
 
-from lib.interactions.entities import Channel 
-from lib.interactions.indirect import IndirectClient
+class IndirectClient(ABC):
+    @abstractmethod
+    def timeseries(self, channel: Channel, start_time: str, end_time: str) -> Stream:
+        pass
 
 class Looper(object):
     def __init__(self, channels: List[Channel], client: IndirectClient, data_callback: Callable):
