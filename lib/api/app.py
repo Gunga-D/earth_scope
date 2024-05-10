@@ -1,10 +1,12 @@
 from aiohttp import web
 
 from lib.api.routes.external import EXTERNAL_ROUTES
+from lib.api.routes.utiliy import UTILITY_ROUTES
 
 class GeoscopeApplication(web.Application):
     _urls = [
         EXTERNAL_ROUTES,
+        UTILITY_ROUTES,
     ]
 
     def __init__(self):
