@@ -6,7 +6,7 @@ from lib.interactions.iris.exception import IrisClientException
 from lib.interactions.entities import Channel
 
 class IrisClient(EasySeedLinkClient):
-    def __init__(self, host: str, port: str, channels: List[Channel], data_callback: Optional[Callable] = None):
+    def __init__(self, host: str, port: str, data_callback: Optional[Callable] = None):
         super().__init__(host + ':' + port)
 
         if len(channels) > 5:

@@ -9,11 +9,11 @@ class GetStreamsAction(BaseAction):
     def __init__(self, service_name):
         self.service_name = service_name
         super().__init__()
-
+    
     async def handle(self) -> List[Stream]:
         if not self.service_name in self._clients.geoservices:
             raise CoreNotFoundError
-        client = self._clients.geoservices[self.service_name]('geofon-open.gfz-potsdam.de', '18000')
+        client = self._clients.geoservices[self.service_name]()
         raw_data = client.get_info('STREAMS')
 
         res = []
