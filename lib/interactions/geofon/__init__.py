@@ -14,7 +14,7 @@ class GeofonClient(EasySeedLinkClient):
             self.data_callback = self.default_data_callback
 
     def default_data_callback(self, trace: Trace):
-        print(f'Received geofon trace:\n{trace}\n')
+        print(f'INFO: Received geofon trace:\n{trace}\n')
 
     def on_data(self, trace: Trace):
         self.data_callback(trace)
