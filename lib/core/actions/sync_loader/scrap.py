@@ -5,8 +5,9 @@ from dataclasses import asdict
 
 from lib.core.actions.base import BaseAction
 from lib.core.entities.sync_loader import ScrapedData
-from lib.core.exceptions import CoreNotFoundError
+from lib.core.exceptions import CoreNotFoundError, CoreDataError
 from lib.config import SAVING_PATH
+from lib.core.const import NOT_SUPPORTED_SCRAP_SERVICES
 
 class ScrapAction(BaseAction):
     def __init__(self, service_name, network, station, left_time, right_time):
@@ -22,6 +23,8 @@ class ScrapAction(BaseAction):
     async def handle(self) -> ScrapedData:
         if not self.service_name in self._clients.geoservices:
             raise CoreNotFoundError
+        if self.service_name in NOT_SUPPORTED_SCRAP_SERVICES:
+            raise CoreDataError
 
         scrap_cache = self._cache.scrap()
         scrap_cache.redis(self._redis)

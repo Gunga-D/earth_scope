@@ -3,6 +3,7 @@ from lib.interactions.iris import IrisClient
 from lib.interactions.geofon import GeofonClient
 from lib.interactions.norsar import NORSARClient
 from lib.interactions.bgr import BGRClient
+from lib.interactions.usgs import USGSClient
 
 class InteractionClients(object):
     geoservices = {
@@ -10,5 +11,6 @@ class InteractionClients(object):
         "IRIS": IrisClient,
         "IPGP": IPGPClient,
         "NORSAR": NORSARClient,
-        "BGR": BGRClient
+        "BGR": BGRClient,
+        "USGS": USGSClient
     }
