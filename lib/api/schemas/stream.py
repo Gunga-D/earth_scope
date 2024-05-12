@@ -7,8 +7,5 @@ class StreamSchema(Schema):
     station = fields.String()
     channels = fields.List(fields.String())
 
-class GetStreamsRequestSchema(Schema):
-    service_name = fields.String()
-
 class GetStreamsResponseSchema(SuccessResponseSchema):
     data = fields.List(fields.Nested(StreamSchema))
