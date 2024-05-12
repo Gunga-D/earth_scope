@@ -1,5 +1,6 @@
 # GEOSCOPE
 ![build status](https://badgen.net/badge/build/latest/green?icon=github)
+![code style](https://badgen.net/static/code%20style/standard/f2a)
 
 Geoscope - это геофизический инструмент для получения геофизических данных с различных служб.
 
