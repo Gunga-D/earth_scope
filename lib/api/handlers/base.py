@@ -1,4 +1,5 @@
 from aiohttp import web
+from aiohttp_cors import CorsViewMixin
 from marshmallow import Schema, ValidationError
 
 from lib.core.exceptions import (
@@ -25,7 +26,7 @@ def raise_api_exception(exc: CoreBaseExceptionError) -> web.Response:
 
     raise APIException(code=code, message=message)
 
-class BaseHandler(web.View):
+class BaseHandler(web.View, CorsViewMixin):
     async def get_json_data(self, struct: Schema) -> Schema:
         try:
             return struct.load(await self.request.json())
@@ -54,6 +55,8 @@ class BaseHandler(web.View):
 
     async def run_action(self, action: BaseAction, *args, **kwargs):
         try:
-            return await action(*args, **kwargs).handle()
+            cls = action(*args, **kwargs)
+            cls.set_context(redis=self.request.app.redis)
+            return await cls.handle()
         except CoreBaseExceptionError as ex:
             raise_api_exception(ex)

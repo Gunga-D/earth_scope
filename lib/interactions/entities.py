@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
 @dataclass
-class Channel:
+class GeoserviceStream:
     network: str
     station: str
