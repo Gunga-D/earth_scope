@@ -1,3 +1,4 @@
 NOT_SUPPORTED_SCRAP_SERVICES = [
-    'USGS'
+    'USGS',
+    'USP'
 ]
