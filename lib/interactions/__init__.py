@@ -5,6 +5,8 @@ from lib.interactions.norsar import NORSARClient
 from lib.interactions.bgr import BGRClient
 from lib.interactions.usgs import USGSClient
 from lib.interactions.usp import USPClient
+from lib.interactions.ifz import IFZClient
+from lib.interactions.plsn import PLSNClient
 
 class InteractionClients(object):
     geoservices = {
@@ -14,5 +16,7 @@ class InteractionClients(object):
         "NORSAR": NORSARClient,
         "BGR": BGRClient,
         "USGS": USGSClient,
-        "USP": USPClient
+        "USP": USPClient,
+        "IFZ": IFZClient,
+        "PLSN": PLSNClient
     }
