@@ -2,16 +2,9 @@ import time
 from datetime import datetime, timezone, timedelta
 from typing import Callable, List
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from obspy.core import Stream
 
-from lib.interactions.entities import GeoserviceStream
-
-@dataclass
-class LoadedStream:
-    network: str
-    station: str
-    channel: str
+from lib.interactions.entities import GeoserviceStream, LoadedStream
 
 class IndirectClient(ABC):
     @abstractmethod
@@ -42,6 +35,17 @@ class IndirectService(object):
         for network in self.client.networks():
             for station in self.client.stations(network):
                 res.append(GeoserviceStream(network, station))
+        return res
+
+    def scrap(self, left_time: str, right_time: str) -> List[Stream]:
+        res = []
+        for channel in self.channels:
+            stream = self.client.timeseries(channel.network,
+                                            channel.station,
+                                            left_time,
+                                            right_time
+                                            )
+            res.append(stream)
         return res
 
     def run(self):

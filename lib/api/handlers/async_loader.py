@@ -5,8 +5,7 @@ from lib.api.schemas.async_loader import (
 )
 from lib.core.tasks.async_loader.launch import LaunchTask
 from lib.api.exceptions import APIException
-
-HTTP_FILE_URL = 'http://127.0.0.1:8001/file/'
+from lib.config import HTTP_FILE_URL
 
 class AsyncLoaderHandler(BaseHandler):
     async def get(self):

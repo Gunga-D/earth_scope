@@ -3,10 +3,11 @@ import time
 from obspy.core import Stream
 import os
 import uuid
+from typing import List
 
 from lib.core.tasks.base import BaseTask
 from lib.core.exceptions import CoreNotFoundError
-from typing import List
+from lib.config import SAVING_PATH
 
 class LaunchTask(BaseTask):
     def __init__(self,
@@ -19,7 +20,7 @@ class LaunchTask(BaseTask):
         self.network = network
         self.station = station
         self.interval = interval_sec
-        self.saving_path = './data'
+        self.saving_path = SAVING_PATH
 
         super().__init__()
 
