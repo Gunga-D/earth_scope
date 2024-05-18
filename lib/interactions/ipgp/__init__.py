@@ -6,7 +6,7 @@ from xml.dom.minidom import parseString
 from typing import Callable, Optional
 
 from lib.interactions.fdsn import FDSNClient
-from lib.interactions.entities import GeoserviceStream, LoadedStream
+from lib.interactions.entities import GeoserviceStream, LoadedStream, StationInfo
 
 class IPGPClient(EasySeedLinkClient):
     def __init__(self,
@@ -30,6 +30,9 @@ class IPGPClient(EasySeedLinkClient):
         self.channels.append(LoadedStream(net, station, selector))
         super().select_stream(net, station, selector)
 
+    def station(self, net, station) -> StationInfo:
+        return self.httpclient.stations(net, station)[0]
+    
     def scrap(self, left_time: str, right_time: str) -> List[Stream]:
         res = []
         for channel in self.channels:

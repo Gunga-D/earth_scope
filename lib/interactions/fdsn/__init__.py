@@ -8,7 +8,8 @@ from xml.dom.minidom import parseString
 
 from lib.config import VERSION
 from lib.interactions.fdsn.const import SUPPORTED_SERVICES
-from lib.interactions.fdsn.exception import FDSNClientException, FDSNClientNoDataException, FDSNClientInvalidParamsException
+from lib.interactions.entities import StationInfo
+from lib.interactions.fdsn.exception import FDSNClientException, FDSNClientNoDataException
 
 class FDSNClient(IndirectClient):
     def __init__(self, base: str):
@@ -22,7 +23,7 @@ class FDSNClient(IndirectClient):
         headers = {'User-Agent': f"GeoScopeCLI/{VERSION}"}
 
         remoteaddr = self.base_url + \
-            f'/dataselect/1/query?starttime={start_time}&endtime={end_time}&network={network}&station={station}&format=miniseed'
+            f'/dataselect/1/query?starttime={start_time}&endtime={end_time}&network={network}&station={station}&format=miniseed&channel=BH?'
         
         try:
             req = urllib.request.Request(url=remoteaddr, headers=headers)
@@ -57,9 +58,11 @@ class FDSNClient(IndirectClient):
             res.append(network.getAttribute('code'))
         return res
         
-    def stations(self, network: str) -> str:
+    def stations(self, network: str, station: str = None) -> List[StationInfo]:
         headers = {'User-Agent': f"GeoScopeCLI/{VERSION}"}
         remoteaddr = self.base_url + f'/station/1/query?format=xml&level=station&network={network}'
+        if not station is None:
+            remoteaddr += f'&station={station}'
         try:
             req = urllib.request.Request(url=remoteaddr, headers=headers)
             response = self.req_opener.open(req, timeout=10)
@@ -71,6 +74,8 @@ class FDSNClient(IndirectClient):
         doc = parseString(response.read())
         networks = doc.getElementsByTagName('Station')
         for network in networks:
-            res.append(network.getAttribute('code'))
+            latitude = float(network.getElementsByTagName('Latitude')[0].firstChild.nodeValue)
+            longitude = float(network.getElementsByTagName('Longitude')[0].firstChild.nodeValue)
+            res.append(StationInfo(network.getAttribute('code'), latitude, longitude))
         return res
         

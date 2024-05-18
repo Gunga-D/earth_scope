@@ -10,3 +10,9 @@ class LoadedStream:
     network: str
     station: str
     channel: str
+
+@dataclass
+class StationInfo:
+    name: str
+    latitude: float
+    longitude: float

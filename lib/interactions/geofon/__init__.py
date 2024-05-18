@@ -5,7 +5,7 @@ from obspy.core.stream import Stream
 from xml.dom.minidom import parseString
 
 from lib.interactions.fdsn import FDSNClient
-from lib.interactions.entities import LoadedStream, GeoserviceStream
+from lib.interactions.entities import LoadedStream, GeoserviceStream, StationInfo
 
 class GeofonClient(EasySeedLinkClient):
     def __init__(self,
@@ -29,6 +29,9 @@ class GeofonClient(EasySeedLinkClient):
         self.channels.append(LoadedStream(net, station, selector))
         super().select_stream(net, station, selector)
 
+    def station(self, net, station) -> StationInfo:
+        return self.httpclient.stations(net, station)[0]
+    
     def scrap(self, left_time: str, right_time: str):
         res = []
         for channel in self.channels:

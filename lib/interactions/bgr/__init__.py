@@ -5,7 +5,7 @@ from obspy.core.stream import Stream
 from xml.dom.minidom import parseString
 
 from lib.interactions.fdsn import FDSNClient
-from lib.interactions.entities import GeoserviceStream, LoadedStream
+from lib.interactions.entities import GeoserviceStream, LoadedStream, StationInfo
 
 # В списке соответствий это GRSN - Немецкий региональная сеймическая сеть
 class BGRClient(EasySeedLinkClient):
@@ -29,6 +29,9 @@ class BGRClient(EasySeedLinkClient):
     def select_stream(self, net, station, selector=None):
         self.channels.append(LoadedStream(net, station, selector))
         super().select_stream(net, station, selector)
+    
+    def station(self, net, station) -> StationInfo:
+        return self.httpclient.stations(net, station)[0]
 
     def scrap(self, left_time: str, right_time: str) -> List[Stream]:
         res = []

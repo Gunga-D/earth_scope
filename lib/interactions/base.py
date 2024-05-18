@@ -4,7 +4,7 @@ from typing import Callable, List
 from abc import ABC, abstractmethod
 from obspy.core import Stream
 
-from lib.interactions.entities import GeoserviceStream, LoadedStream
+from lib.interactions.entities import GeoserviceStream, LoadedStream, StationInfo
 
 class IndirectClient(ABC):
     @abstractmethod
@@ -34,9 +34,12 @@ class IndirectService(object):
         res = []
         for network in self.client.networks():
             for station in self.client.stations(network):
-                res.append(GeoserviceStream(network, station))
+                res.append(GeoserviceStream(network, station.name))
         return res
 
+    def station(self, net, station) -> StationInfo:
+        return self.httpclient.stations(net, station)[0]
+    
     def scrap(self, left_time: str, right_time: str) -> List[Stream]:
         res = []
         for channel in self.channels:
