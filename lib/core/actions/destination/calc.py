@@ -23,5 +23,5 @@ class CalcDestinationAction(BaseAction):
         station_info = client.station(self.network, self.station)
         dist = geodesic((self.source_latitude, self.source_longitude), (station_info.latitude, station_info.longitude))
 
-        on_map = f'https://yandex.ru/maps/?ll={self.source_longitude}%2C{self.source_latitude}&pt={self.source_longitude}%2C{self.source_latitude}~{station_info.longitude}%2C{station_info.latitude}&rl={self.source_longitude}%2C{self.source_latitude}~{station_info.longitude}%2C{station_info.latitude}&z=2'
+        on_map = f'https://yandex.ru/map-widget/v1/?ll={self.source_longitude}%2C{self.source_latitude}&pt={self.source_longitude}%2C{self.source_latitude}~{station_info.longitude}%2C{station_info.latitude}&rl={self.source_longitude}%2C{self.source_latitude}~{station_info.longitude}%2C{station_info.latitude}&z=2'
         return Destination(kilometers=dist.km, degrees=dist.km/111, on_map=on_map)
