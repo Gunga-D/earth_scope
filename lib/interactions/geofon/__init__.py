@@ -5,12 +5,14 @@ from obspy.core.stream import Stream
 from xml.dom.minidom import parseString
 
 from lib.interactions.fdsn import FDSNClient
-from lib.interactions.entities import LoadedStream, GeoserviceStream, StationInfo
+from lib.interactions.entities import LoadedStream, GeoserviceStream, StationInfo, SeedlinkConnectionInfo
 
 class GeofonClient(EasySeedLinkClient):
     def __init__(self,
                  data_callback: Optional[Callable] = None):
-        super().__init__('geofon-open.gfz-potsdam.de:18000')
+        self._seedlink_connection_info = SeedlinkConnectionInfo('geofon-open.gfz-potsdam.de', '18000')
+
+        super().__init__(self._seedlink_connection_info.host + ':' + self._seedlink_connection_info.port)
         self.httpclient = FDSNClient('GEOFON')
 
         self.channels = []
@@ -52,3 +54,6 @@ class GeofonClient(EasySeedLinkClient):
         for station in stations:
             res.append(GeoserviceStream(network=station.getAttribute('network'), station=station.getAttribute('name')))
         return res
+    
+    def get_connection_info(self) -> SeedlinkConnectionInfo:
+        return self._seedlink_connection_info

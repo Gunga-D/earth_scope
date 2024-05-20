@@ -5,13 +5,15 @@ from obspy.core.stream import Stream
 from xml.dom.minidom import parseString
 
 from lib.interactions.fdsn import FDSNClient
-from lib.interactions.entities import GeoserviceStream, LoadedStream, StationInfo
+from lib.interactions.entities import GeoserviceStream, LoadedStream, StationInfo, SeedlinkConnectionInfo
 
 # В списке соответствий это GRSN - Немецкий региональная сеймическая сеть
 class BGRClient(EasySeedLinkClient):
     def __init__(self,
                 data_callback: Optional[Callable] = None):
-        super().__init__('eida.bgr.de:18000')
+        self._seedlink_connection_info = SeedlinkConnectionInfo('eida.bgr.de', '18000')
+
+        super().__init__(self._seedlink_connection_info.host + ':' + self._seedlink_connection_info.port)
         self.httpclient = FDSNClient('BGR')
         
         self.channels = []
@@ -53,3 +55,6 @@ class BGRClient(EasySeedLinkClient):
         for station in stations:
             res.append(GeoserviceStream(network=station.getAttribute('network'), station=station.getAttribute('name')))
         return res
+    
+    def get_connection_info(self) -> SeedlinkConnectionInfo:
+        return self._seedlink_connection_info

@@ -4,12 +4,13 @@ from obspy.core.trace import Trace
 from obspy.core.stream import Stream
 from xml.dom.minidom import parseString
 
-from lib.interactions.entities import GeoserviceStream
+from lib.interactions.entities import GeoserviceStream, SeedlinkConnectionInfo
 
 class USGSClient(EasySeedLinkClient):
     def __init__(self,
                 data_callback: Optional[Callable] = None):
-        super().__init__('cwbpub.cr.usgs.gov:18000')
+        self._seedlink_connection_info = SeedlinkConnectionInfo('cwbpub.cr.usgs.gov', '18000')
+        super().__init__(self._seedlink_connection_info.host + ':' + self._seedlink_connection_info.port)
 
         self.data_callback = data_callback
         if not self.data_callback:
@@ -30,3 +31,6 @@ class USGSClient(EasySeedLinkClient):
         for station in stations:
             res.append(GeoserviceStream(network=station.getAttribute('network'), station=station.getAttribute('name')))
         return res
+    
+    def get_connection_info(self) -> SeedlinkConnectionInfo:
+        return self._seedlink_connection_info

@@ -6,12 +6,15 @@ from xml.dom.minidom import parseString
 from typing import Callable, Optional
 
 from lib.interactions.fdsn import FDSNClient
-from lib.interactions.entities import GeoserviceStream, LoadedStream, StationInfo
+from lib.interactions.entities import GeoserviceStream, LoadedStream, StationInfo, SeedlinkConnectionInfo
 
 class IPGPClient(EasySeedLinkClient):
     def __init__(self,
                 data_callback: Optional[Callable] = None):
-        super().__init__('rtserver.ipgp.fr:18000')
+        
+        self._seedlink_connection_info = SeedlinkConnectionInfo('rtserver.ipgp.fr', '18000')
+
+        super().__init__(self._seedlink_connection_info.host + ':' + self._seedlink_connection_info.port)
         self.httpclient = FDSNClient('http://ws.ipgp.fr/fdsnws')
 
         self.channels = []
@@ -53,3 +56,6 @@ class IPGPClient(EasySeedLinkClient):
         for station in stations:
             res.append(GeoserviceStream(network=station.getAttribute('network'), station=station.getAttribute('name')))
         return res
+    
+    def get_connection_info(self) -> SeedlinkConnectionInfo:
+        return self._seedlink_connection_info

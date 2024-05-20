@@ -5,12 +5,15 @@ from obspy.core.stream import Stream
 from xml.dom.minidom import parseString
 
 from lib.interactions.fdsn import FDSNClient
-from lib.interactions.entities import GeoserviceStream, LoadedStream, StationInfo
+from lib.interactions.entities import GeoserviceStream, LoadedStream, StationInfo, SeedlinkConnectionInfo
 
 class IrisClient(EasySeedLinkClient):
     def __init__(self,
                 data_callback: Optional[Callable] = None):
-        super().__init__('rtserve.iris.washington.edu:18000')
+        
+        self._seedlink_connection_info = SeedlinkConnectionInfo('rtserve.iris.washington.edu', '18000')
+
+        super().__init__(self._seedlink_connection_info.host + ':' + self._seedlink_connection_info.port)
         self.httpclient = FDSNClient('IRIS')
         
         self.channels = []
@@ -52,3 +55,6 @@ class IrisClient(EasySeedLinkClient):
         for station in stations:
             res.append(GeoserviceStream(network=station.getAttribute('network'), station=station.getAttribute('name')))
         return res
+    
+    def get_connection_info(self) -> SeedlinkConnectionInfo:
+        return self._seedlink_connection_info

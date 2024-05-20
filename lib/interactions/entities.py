@@ -16,3 +16,8 @@ class StationInfo:
     name: str
     latitude: float
     longitude: float
+
+@dataclass
+class SeedlinkConnectionInfo:
+    host: str
+    port: str

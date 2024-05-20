@@ -4,12 +4,14 @@ from obspy.core.trace import Trace
 from obspy.core.stream import Stream
 from xml.dom.minidom import parseString
 
-from lib.interactions.entities import GeoserviceStream
+from lib.interactions.entities import GeoserviceStream, SeedlinkConnectionInfo
 
 class IFZClient(EasySeedLinkClient):
     def __init__(self,
                 data_callback: Optional[Callable] = None):
-        super().__init__('data.ifz.ru:18000')
+        self._seedlink_connection_info = SeedlinkConnectionInfo('data.ifz.ru', '18000')
+
+        super().__init__(self._seedlink_connection_info.host + ':' + self._seedlink_connection_info.port)
 
         self.data_callback = data_callback
         if not self.data_callback:
@@ -30,3 +32,6 @@ class IFZClient(EasySeedLinkClient):
         for station in stations:
             res.append(GeoserviceStream(network=station.getAttribute('network'), station=station.getAttribute('name')))
         return res
+    
+    def get_connection_info(self) -> SeedlinkConnectionInfo:
+        return self._seedlink_connection_info
