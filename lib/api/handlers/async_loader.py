@@ -17,9 +17,10 @@ class AsyncLoaderHandler(BaseHandler):
             job = self.request.app.queue.fetch_job(task_id)
             data = None
             if job.get_status() == 'finished':
-                data = [HTTP_FILE_URL + f.replace('/', '%2F') for f in job.return_value()]
+                data = job.return_value()
+                data.file = HTTP_FILE_URL + data.file.replace('/', '%2F')
             return self.make_response(LaunchAsyncLoaderResponseSchema(),
-                                       {'data': {'task_id': task_id, 'status': job.get_status(), 'files': data}})
+                                       {'data': {'task_id': task_id, 'status': job.get_status(), 'result': data}})
         except APIException as ex:
             return ex.throw()
 
