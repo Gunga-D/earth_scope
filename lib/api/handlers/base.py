@@ -29,7 +29,8 @@ def raise_api_exception(exc: CoreBaseExceptionError) -> web.Response:
 class BaseHandler(web.View, CorsViewMixin):
     async def get_json_data(self, struct: Schema) -> Schema:
         try:
-            return struct.load(await self.request.json())
+            data = await self.request.json()
+            return struct.load(data)
         except ValidationError:
             raise APIException(code=400, message='Invalid request')
     

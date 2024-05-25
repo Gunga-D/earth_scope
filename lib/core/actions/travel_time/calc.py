@@ -6,7 +6,7 @@ from obspy.taup import TauPyModel
 
 calc_model = TauPyModel(model="iasp91")
 
-class CalcRawDestinationAction(BaseAction):
+class CalcTraveTimeAction(BaseAction):
     def __init__(self, depth_km, distance_degree):
         self.depth_km = depth_km
         self.distance_degree = distance_degree

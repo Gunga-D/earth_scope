@@ -6,7 +6,7 @@ from lib.api.handlers.base import BaseHandler
 from lib.api.exceptions import APIException
 from lib.core.actions.raw_destination.calc import CalcRawDestinationAction
 
-class CalcStationDestinationHandler(BaseHandler):
+class CalcRawDestinationHandler(BaseHandler):
     async def post(self):
         """
         Расчет дистанции между выбранными точками.
