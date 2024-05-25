@@ -5,7 +5,7 @@ from lib.core.const import NOT_SUPPORTED_DIST_SERVICES
 
 from geopy.distance import geodesic
 
-class CalcDestinationAction(BaseAction):
+class CalcStationDestinationAction(BaseAction):
     def __init__(self, service_name, network, station, source_latitude, source_longitude):
         self.service_name = service_name
         self.network = network
