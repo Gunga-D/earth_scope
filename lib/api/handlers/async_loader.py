@@ -30,8 +30,8 @@ class AsyncLoaderHandler(BaseHandler):
         """
         try:
             stream = await self.get_json_data(LaunchAsyncLoaderRequestSchema())
-            if stream.interval_sec > 15:
-                raise APIException(code=400, message='interval must be <= 15 sec')
+            if stream.interval_sec > 60:
+                raise APIException(code=400, message='interval must be <= 60 sec')
             
             job = self.enqueue_task(LaunchTask, **stream)
             return self.make_response(LaunchAsyncLoaderResponseSchema(), {'data': {'task_id': job.id}})
